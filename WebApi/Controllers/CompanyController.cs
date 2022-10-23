@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Web.Http;
 using AutoMapper;
 using BusinessLayer.Model.Interfaces;
+using BusinessLayer.Model.Models;
 using WebApi.Models;
 
 namespace WebApi.Controllers
@@ -18,32 +20,35 @@ namespace WebApi.Controllers
             _mapper = mapper;
         }
         // GET api/<controller>
-        public IEnumerable<CompanyDto> GetAll()
+        public async Task<IEnumerable<CompanyDto>> GetAll()
         {
-            var items = _companyService.GetAllCompanies();
+            var items = await _companyService.GetAllCompaniesAsync();
             return _mapper.Map<IEnumerable<CompanyDto>>(items);
         }
 
-        // GET api/<controller>/5
-        public CompanyDto Get(string companyCode)
+        // GET api/<controller>?siteId=1&companyCode=abc
+        public async Task<CompanyDto> Get(string siteId, string companyCode)
         {
-            var item = _companyService.GetCompanyByCode(companyCode);
+            var item = await _companyService.GetCompanyByCodeAsync(siteId, companyCode);
             return _mapper.Map<CompanyDto>(item);
         }
 
         // POST api/<controller>
-        public void Post([FromBody]string value)
+        public async Task<bool> Post([FromBody] CompanyDto obj)
         {
+            return await _companyService.SaveCompanyAsync(_mapper.Map<CompanyInfo>(obj));
         }
 
-        // PUT api/<controller>/5
-        public void Put(int id, [FromBody]string value)
+        // PUT api/<controller>?companyCode=abc
+        public async Task<bool> Put(string companyCode, [FromBody] CompanyDto obj)
         {
+            return await _companyService.SaveCompanyAsync(_mapper.Map<CompanyInfo>(obj));
         }
 
-        // DELETE api/<controller>/5
-        public void Delete(int id)
+        // DELETE api/<controller>?siteId=1&companyCode=abc
+        public async Task<bool> Delete(string siteId, string companyCode)
         {
+            return await _companyService.DeleteCompanyAsync(siteId, companyCode);
         }
     }
 }

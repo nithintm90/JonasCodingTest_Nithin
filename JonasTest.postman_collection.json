@@ -1,0 +1,336 @@
+{
+	"info": {
+		"_postman_id": "3b2c75d5-5b0b-472d-b33e-dc9a4f573dc7",
+		"name": "JonasTest",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "5986781"
+	},
+	"item": [
+		{
+			"name": "Company",
+			"item": [
+				{
+					"name": "GetAllCompany",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:51480/api/company",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51480",
+							"path": [
+								"api",
+								"company"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetByCompanyCode",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:51480/api/company?siteId=1&companyCode=abc",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51480",
+							"path": [
+								"api",
+								"company"
+							],
+							"query": [
+								{
+									"key": "siteId",
+									"value": "1"
+								},
+								{
+									"key": "companyCode",
+									"value": "abc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreateNewCompany",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"SiteId\": 1,\r\n    \"CompanyCode\": \"abc\",\r\n    \"CompanyName\": \"abc Inc.\",\r\n    \"AddressLine1\": \"\",\r\n    \"AddressLine2\": \"\",\r\n    \"AddressLine3\": \"\",\r\n    \"PostalZipCode\": \"\",\r\n    \"PhoneNumber\": \"\",\r\n    \"FaxNumber\": \"\",\r\n    \"EquipmentCompanyCode\": \"\",\r\n    \"Country\": \"\",\r\n    \"LastModified\": \"2022-04-04\",\r\n    \"ArSubledgers\": [\r\n        {\r\n            \"SiteId\": 1,\r\n            \"CompanyCode\": \"abc\",\r\n            \"ArSubledgerCode\": \"z\",\r\n            \"Description\": \"ArSubledger Description\",\r\n            \"CustomerName\": \"\",\r\n            \"AddressLine1\": \"\",\r\n            \"AddressLine2\": \"\",\r\n            \"AddressLine3\": \"\",\r\n            \"PostalZipCode\": \"\",\r\n            \"PhoneNumber\": \"\",\r\n            \"FaxNumber\": \"\",\r\n            \"LastModified\": \"\",\r\n            \"Active\": \"\",\r\n            \"Inactive\": \"\",\r\n            \"Excellent\": \"\",\r\n            \"Good\": \"\",\r\n            \"Fair\": \"\",\r\n            \"Poor\": \"\",\r\n            \"Condemned\": \"\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:51480/api/company",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51480",
+							"path": [
+								"api",
+								"company"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateCompany",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"SiteId\": 1,\r\n    \"CompanyCode\": \"abc\",\r\n    \"CompanyName\": \"abc Inc.\",\r\n    \"AddressLine1\": \"test\",\r\n    \"AddressLine2\": \"\",\r\n    \"AddressLine3\": \"\",\r\n    \"PostalZipCode\": \"\",\r\n    \"PhoneNumber\": \"\",\r\n    \"FaxNumber\": \"\",\r\n    \"EquipmentCompanyCode\": \"\",\r\n    \"Country\": \"\",\r\n    \"LastModified\": \"2022-04-04\",\r\n    \"ArSubledgers\": [\r\n        {\r\n            \"SiteId\": 1,\r\n            \"CompanyCode\": \"abc\",\r\n            \"ArSubledgerCode\": \"z\",\r\n            \"Description\": \"ArSubledger Description\",\r\n            \"CustomerName\": \"\",\r\n            \"AddressLine1\": \"\",\r\n            \"AddressLine2\": \"\",\r\n            \"AddressLine3\": \"\",\r\n            \"PostalZipCode\": \"\",\r\n            \"PhoneNumber\": \"\",\r\n            \"FaxNumber\": \"\",\r\n            \"LastModified\": \"\",\r\n            \"Active\": \"\",\r\n            \"Inactive\": \"\",\r\n            \"Excellent\": \"\",\r\n            \"Good\": \"\",\r\n            \"Fair\": \"\",\r\n            \"Poor\": \"\",\r\n            \"Condemned\": \"\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:51480/api/company?companyCode=abc",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51480",
+							"path": [
+								"api",
+								"company"
+							],
+							"query": [
+								{
+									"key": "companyCode",
+									"value": "abc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteCompany",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:51480/api/company?siteId=1&companyCode=abc",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51480",
+							"path": [
+								"api",
+								"company"
+							],
+							"query": [
+								{
+									"key": "siteId",
+									"value": "1"
+								},
+								{
+									"key": "companyCode",
+									"value": "abc"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Employee",
+			"item": [
+				{
+					"name": "GetAllEmployee",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:51480/api/employee",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51480",
+							"path": [
+								"api",
+								"employee"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetByEmployeeCode",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:51480/api/employee?siteId=1&companyCode=abc&employeeCode=123",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51480",
+							"path": [
+								"api",
+								"employee"
+							],
+							"query": [
+								{
+									"key": "siteId",
+									"value": "1"
+								},
+								{
+									"key": "companyCode",
+									"value": "abc"
+								},
+								{
+									"key": "employeeCode",
+									"value": "123"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreateNewCompany",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"SiteId\": 1,\r\n    \"CompanyCode\": \"abc\",\r\n    \"EmployeeCode\": \"123\",\r\n    \"EmployeeName\": \"John Doe\",\r\n    \"Occupation\": \"\",\r\n    \"EmployeeStatus\": \"\",\r\n    \"EmailAddress\": \"\",\r\n    \"Phone\": \"\",\r\n    \"LastModified\": \"2022-04-04T00:00:00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:51480/api/employee",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51480",
+							"path": [
+								"api",
+								"employee"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateCompany",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"SiteId\": 1,\r\n    \"CompanyCode\": \"abc\",\r\n    \"EmployeeCode\": \"123\",\r\n    \"EmployeeName\": \"John Doe\",\r\n    \"Occupation\": \"test\",\r\n    \"EmployeeStatus\": \"\",\r\n    \"EmailAddress\": \"\",\r\n    \"Phone\": \"\",\r\n    \"LastModified\": \"2022-04-04T00:00:00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:51480/api/employee?employeeCode=123",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51480",
+							"path": [
+								"api",
+								"employee"
+							],
+							"query": [
+								{
+									"key": "employeeCode",
+									"value": "123"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteCompany",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:51480/api/employee?siteId=1&companyCode=abc&employeeCode=123",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51480",
+							"path": [
+								"api",
+								"employee"
+							],
+							"query": [
+								{
+									"key": "siteId",
+									"value": "1"
+								},
+								{
+									"key": "companyCode",
+									"value": "abc"
+								},
+								{
+									"key": "employeeCode",
+									"value": "123"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "GetAllLogs",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:51480/api/log",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "51480",
+					"path": [
+						"api",
+						"log"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

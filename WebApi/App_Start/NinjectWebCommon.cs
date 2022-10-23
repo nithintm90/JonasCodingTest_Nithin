@@ -4,8 +4,9 @@ using DataAccessLayer.Database;
 using DataAccessLayer.Model.Interfaces;
 using DataAccessLayer.Repositories;
 
-[assembly: WebActivatorEx.PreApplicationStartMethod(typeof(WebApi.App_Start.NinjectWebCommon), "Start")]
-[assembly: WebActivatorEx.ApplicationShutdownMethodAttribute(typeof(WebApi.App_Start.NinjectWebCommon), "Stop")]
+// disabled Ninject and using simple injector as I could not make the controllers and services singleton to maintain the in memory db instance 
+//[assembly: WebActivatorEx.PreApplicationStartMethod(typeof(WebApi.App_Start.NinjectWebCommon), "Start")]
+//[assembly: WebActivatorEx.ApplicationShutdownMethodAttribute(typeof(WebApi.App_Start.NinjectWebCommon), "Stop")]
 
 namespace WebApi.App_Start
 {
