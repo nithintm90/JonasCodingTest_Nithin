@@ -9,6 +9,8 @@ namespace WebApi
         public AppServicesProfile()
         {
             CreateMapper();
+
+
         }
 
         private void CreateMapper()
@@ -16,6 +18,11 @@ namespace WebApi
             CreateMap<BaseInfo, BaseDto>();
             CreateMap<CompanyInfo, CompanyDto>();
             CreateMap<ArSubledgerInfo, ArSubledgerDto>();
+            CreateMap<EmployeeInfo, EmployeeDto>();
+            //.AfterMap((src, dest) =>
+            //    {
+            //        dest.CompanyName.ForEach(x => x.Price -= src.CategoryDiscount);
+            //    });
         }
     }
 }
