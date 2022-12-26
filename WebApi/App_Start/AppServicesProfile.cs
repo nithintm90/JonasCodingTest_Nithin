@@ -20,7 +20,9 @@ namespace WebApi
             CreateMap<ArSubledgerInfo, ArSubledgerDto>();
             CreateMap<EmployeeInfo, EmployeeDto>()
                 .ForMember(dest => dest.OccupationName, opt => opt.MapFrom(src => src.Occupation))
-                .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.Phone));
+                .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.Phone))
+                .ForMember(dest => dest.LastModifiedDateTime, opt => opt.MapFrom(src => src.LastModified)
+                );
                 
 
             //.AfterMap((src, dest) =>

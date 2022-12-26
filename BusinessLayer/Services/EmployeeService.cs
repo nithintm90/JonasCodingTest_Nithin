@@ -25,9 +25,17 @@ namespace BusinessLayer.Services
         }
         public async Task<IEnumerable<EmployeeInfo>> GetAllEmployeeAsync()
         {
-            var res = await _employeeRepository.GetAllAsync();            
-            var employees=  _mapper.Map<IEnumerable<EmployeeInfo>>(res);
-            //var emp= employees.ToList().ForEach(e => e.CompanyName =  _companyRepository.GetByCodeAsync(e.CompanyCode));
+            var res = await _employeeRepository.GetAllAsync();
+           
+            var employees =  _mapper.Map<IEnumerable<EmployeeInfo>>(res);
+
+
+            foreach (var employee in employees)
+            {
+                employee.CompanyName = (await _companyRepository.GetByCodeAsync(employee.CompanyCode)).CompanyName;
+            }
+
+         
             return employees;
         }
 
