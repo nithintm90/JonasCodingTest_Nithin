@@ -1,8 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using DataAccessLayer.Model.Interfaces;
 using DataAccessLayer.Model.Models;
+using System.Web.Http;
 
 namespace DataAccessLayer.Repositories
 {
@@ -23,6 +26,15 @@ namespace DataAccessLayer.Repositories
         public async Task<Company> GetByCodeAsync(string companyCode)
         {
             var result=  await _companyDbWrapper.FindAsync(t => t.CompanyCode.Equals(companyCode));
+            if (result == null)
+            {
+                var resp = new HttpResponseMessage(HttpStatusCode.NotFound)
+                {
+                    Content = new StringContent(string.Format("No Company with code = {0}", companyCode)),
+                    ReasonPhrase = "Company Code Not Found"
+                };
+                throw new HttpResponseException(resp);
+            }
             return result?.FirstOrDefault();
         }
         public async Task<bool> SaveCompanyAsync(Company company)
