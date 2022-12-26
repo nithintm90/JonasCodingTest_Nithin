@@ -23,8 +23,33 @@ namespace WebApi.Controllers
         // GET api/<controller>
         public async Task<IEnumerable<EmployeeDto>> GetAll()
         {
-            var items = await _employeeService.GetAllEmployeeAsync();
-            return _mapper.Map<IEnumerable<EmployeeDto>>(items);
+            try
+            {
+                var items = await _employeeService.GetAllEmployeeAsync();
+                return _mapper.Map<IEnumerable<EmployeeDto>>(items);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex.Message);
+                return null;
+            }
+        }
+
+
+        // POST api/<controller>
+        public async Task<bool> Post([FromBody] EmployeeDto employeeDto)
+        {
+            try
+            {
+                var employee = _mapper.Map<EmployeeInfo>(employeeDto);
+
+                return await this._employeeService.SaveEmployeeAsync(employee);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex.Message);
+                return false;
+            }
         }
 
 

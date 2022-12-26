@@ -22,23 +22,47 @@ namespace WebApi.Controllers
         // GET api/<controller>
         public async Task<IEnumerable<CompanyDto>> GetAll()
         {
-            var items = await _companyService.GetAllCompaniesAsync();
-            return _mapper.Map<IEnumerable<CompanyDto>>(items);
+            try
+            {
+                var items = await _companyService.GetAllCompaniesAsync();
+                return _mapper.Map<IEnumerable<CompanyDto>>(items);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex.Message);
+                return null;
+            }
         }
 
         // GET api/<controller>/5
         public async Task<CompanyDto> Get(string companyCode)
         {
-            var item = await _companyService.GetCompanyByCodeAsync(companyCode);
-            return _mapper.Map<CompanyDto>(item);
+            try
+            {
+                var item = await _companyService.GetCompanyByCodeAsync(companyCode);
+                return _mapper.Map<CompanyDto>(item);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex.Message);
+                return null;
+            }
         }
 
         // POST api/<controller>
         public async Task<bool> Post([FromBody] CompanyDto companyDto)
         {
-            var company = _mapper.Map<CompanyInfo>(companyDto);
+            try
+            {
+                var company = _mapper.Map<CompanyInfo>(companyDto);
 
-            return await this._companyService.SaveCompanyAsync(company);
+                return await this._companyService.SaveCompanyAsync(company);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex.Message);
+                return false;
+            }
         }
 
         // PUT api/<controller>/5
@@ -49,23 +73,31 @@ namespace WebApi.Controllers
             {
                 throw new Exception("Invalid Category Id");
             }
-
-            var companyInfo = await this._companyService.GetCompanyByCodeAsync(id);
-
-            _mapper.Map(companyDto, companyInfo);
-
-            if (companyInfo == null)
-            {
-                throw new Exception($"CompanyCode {id} is not found.");
-            }
-
             try
             {
-                return await this._companyService.SaveCompanyAsync(companyInfo);
+                var companyInfo = await this._companyService.GetCompanyByCodeAsync(id);
+
+                _mapper.Map(companyDto, companyInfo);
+
+                if (companyInfo == null)
+                {
+                    throw new Exception($"CompanyCode {id} is not found.");
+                }
+
+                try
+                {
+                    return await this._companyService.SaveCompanyAsync(companyInfo);
+                }
+                catch (Exception ex)
+                {
+                    Logger.LogError($"Error occured while updating CompanyCode {id} Error: {ex.Message} ");
+                    return false;
+                }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw new Exception($"Error occured while updating CompanyCode {id}.");
+                Logger.LogError(ex.Message);
+                return false;
             }
             
         }
@@ -73,8 +105,16 @@ namespace WebApi.Controllers
         // DELETE api/<controller>/5
         public async Task<bool> Delete(string companyCode)
         {
-            bool result = await _companyService.DeleteCompanyAsync(companyCode);
-             return result;
+            try
+            {
+                bool result = await _companyService.DeleteCompanyAsync(companyCode);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex.Message);
+                return false;
+            }
         }
     }
 }
