@@ -27,5 +27,23 @@ namespace BusinessLayer.Services
             var result = _companyRepository.GetByCode(companyCode);
             return _mapper.Map<CompanyInfo>(result);
         }
+        public bool SaveCompanyDetails(CompanyInfo companyInfo)
+        {
+          var result = _companyRespository.SaveCompany(_mapper.Map<Company>(companyInfo))
+          return result;
+        }
+        public bool UpdateCompanyDetails(string companyCode, CompanyInfo companyInfo)
+        {
+          companyInfo.CompanyCode = companyCode;
+          var result = _companyRespository.SaveCompany(_mapper.Map<Company>(companyInfo))
+          return result;
+        }
+        public bool DeleteCompanyDetails(string companyCode)
+        {
+            var result = _companyRepository.DeleteByCode(companyCode);
+            return result;
+        }
+        
+        
     }
 }

@@ -11,39 +11,77 @@ namespace WebApi.Controllers
     {
         private readonly ICompanyService _companyService;
         private readonly IMapper _mapper;
+         private readonly ILogger _logger;
 
-        public CompanyController(ICompanyService companyService, IMapper mapper)
+        public CompanyController(ICompanyService companyService, IMapper mapper,ILogger logger)
         {
             _companyService = companyService;
             _mapper = mapper;
+            _logger = logger;
         }
         // GET api/<controller>
-        public IEnumerable<CompanyDto> GetAll()
+        public async IEnumerable<CompanyDto> GetAll()
         {
-            var items = _companyService.GetAllCompanies();
+        try {
+            var items = await _companyService.GetAllCompanies();
             return _mapper.Map<IEnumerable<CompanyDto>>(items);
+            }
+            catch(Exception e)
+            {
+            _logger.log(e);
+            }
         }
 
         // GET api/<controller>/5
-        public CompanyDto Get(string companyCode)
+        public async CompanyDto Get(string companyCode)
         {
-            var item = _companyService.GetCompanyByCode(companyCode);
+        try{
+            var item = await _companyService.GetCompanyByCode(companyCode);
             return _mapper.Map<CompanyDto>(item);
+            }
+             catch(Exception e)
+            {
+            _logger.log(e);
+            }
         }
 
         // POST api/<controller>
-        public void Post([FromBody]string value)
+        public async bool Post(CompanyDto companyDto)
         {
+        try{
+            var result = await _companyService.SaveCompanyDetails(_mapper.Map<CompanyInfo>(companyDto));
+            return result;
+            }
+             catch(Exception e)
+            {
+            _logger.log(e);
+            }
         }
 
         // PUT api/<controller>/5
-        public void Put(int id, [FromBody]string value)
+        public async bool Put(string companyCode, CompanyDto companyDto)
         {
+        try{
+            var result = await _companyService.SaveCompanyDetails(string companyCode, _mapper.Map<CompanyInfo>(companyDto));
+            return result;
+            }
+             catch(Exception e)
+            {
+            _logger.log(e);
+            }
         }
 
         // DELETE api/<controller>/5
-        public void Delete(int id)
+        public async bool Delete(string companyCode)
         {
+        try{
+            var result = await _companyService.DeleteCompanyDetails(string companyCode);
+            return result;
+            }
+             catch(Exception e)
+            {
+            _logger.log(e);
+            }
         }
     }
 }
