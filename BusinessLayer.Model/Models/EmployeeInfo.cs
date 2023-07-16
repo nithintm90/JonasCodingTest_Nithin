@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLayer.Model.Models
 {
-    public class EmployeeInfo
+    public class EmployeeInfo: BaseInfo
     {
         public string EmployeeCode { get; set; }
         public string EmployeeName { get; set; }
