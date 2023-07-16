@@ -8,12 +8,14 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
+using DataAccessLayer.Model.Models;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using WebApi.Models;
 
 namespace WebApi.Controllers
 {
+    [RoutePrefix("api/employee")]
     public class EmployeeController : ApiController
     {
         private readonly IEmployeeService _employeeService;
@@ -26,6 +28,7 @@ namespace WebApi.Controllers
             _logger = logger;
         }
         // GET api/<controller>
+        [HttpGet]
         public async Task<IEnumerable<EmployeeDto>> GetAll()
         {
             _logger.LogInformation("GetAllEmployees called");
@@ -34,6 +37,8 @@ namespace WebApi.Controllers
         }
 
         // GET api/<controller>/5
+        [HttpGet]
+        [Route("{employeeCode}")]
         public async Task<EmployeeDto> Get(string employeeCode)
         {
             _logger.LogInformation($"GetEmployeeByCode called with employeeCode {employeeCode}");
@@ -42,6 +47,7 @@ namespace WebApi.Controllers
         }
 
         // POST api/<controller>
+        [HttpPost]
         public async Task<bool> Post([FromBody] EmployeeDto employee)
         {
             _logger.LogInformation($"Post called with employee body {JsonConvert.SerializeObject(employee)}");
@@ -50,6 +56,8 @@ namespace WebApi.Controllers
         }
 
         // PUT api/<controller>/5
+        [HttpPut]
+        [Route("{employeeCode}")]
         public async Task<bool> Put(string employeeCode, [FromBody] EmployeeDto employee)
         {
             _logger.LogInformation($"PUT called with employee body {JsonConvert.SerializeObject(employee)}");
@@ -64,6 +72,8 @@ namespace WebApi.Controllers
         }
 
         // DELETE api/<controller>/5
+        [HttpDelete]
+        [Route("{employeeCode}")]
         public async Task<bool> Delete(string employeeCode)
         {
             _logger.LogInformation($"Delete called with employeeCode {employeeCode}");
