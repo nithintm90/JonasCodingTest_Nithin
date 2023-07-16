@@ -3,16 +3,18 @@ using System.Linq;
 using System.Threading.Tasks;
 using DataAccessLayer.Model.Interfaces;
 using DataAccessLayer.Model.Models;
+using Microsoft.Extensions.Logging;
 
 namespace DataAccessLayer.Repositories
 {
     public class CompanyRepository : ICompanyRepository
     {
 	    private readonly IDbWrapper<Company> _companyDbWrapper;
-
-	    public CompanyRepository(IDbWrapper<Company> companyDbWrapper)
-	    {
-		    _companyDbWrapper = companyDbWrapper;
+        private readonly ILogger<CompanyRepository> _logger;
+	    public CompanyRepository(IDbWrapper<Company> companyDbWrapper, ILogger<CompanyRepository> logger)
+        {
+            _companyDbWrapper = companyDbWrapper;
+            _logger = logger;
         }
 
         public async Task<IEnumerable<Company>> GetAll()
@@ -31,6 +33,7 @@ namespace DataAccessLayer.Repositories
                 t.SiteId.Equals(company.SiteId) && t.CompanyCode.Equals(company.CompanyCode)).ConfigureAwait(false))?.FirstOrDefault();
             if (itemRepo != null)
             {
+                _logger.LogInformation($"Updating as company with company code: {company} exists");
                 itemRepo.CompanyName = company.CompanyName;
                 itemRepo.AddressLine1 = company.AddressLine1;
                 itemRepo.AddressLine2 = company.AddressLine2;
@@ -43,6 +46,8 @@ namespace DataAccessLayer.Repositories
                 itemRepo.LastModified = company.LastModified;
                 return await _companyDbWrapper.UpdateAsync(itemRepo).ConfigureAwait(false);
             }
+
+            _logger.LogInformation($"Inserting as company with company code: {company} is new");
 
             return await _companyDbWrapper.InsertAsync(company).ConfigureAwait(false);
         }
