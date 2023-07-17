@@ -1,5 +1,6 @@
 ﻿using BusinessLayer.Model.Interfaces;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using AutoMapper;
 using BusinessLayer.Model.Models;
 using DataAccessLayer.Model.Interfaces;
@@ -17,26 +18,26 @@ namespace BusinessLayer.Services
             _companyRepository = companyRepository;
             _mapper = mapper;
         }
-        public IEnumerable<CompanyInfo> GetAllCompanies()
+        public async Task<IEnumerable<CompanyInfo>> GetAllCompanies()
         {
-            var res = _companyRepository.GetAll();
+            var res = await _companyRepository.GetAll().ConfigureAwait(false);
             return _mapper.Map<IEnumerable<CompanyInfo>>(res);
         }
 
-        public CompanyInfo GetCompanyByCode(string companyCode)
+        public async Task<CompanyInfo> GetCompanyByCode(string companyCode)
         {
-            var result = _companyRepository.GetByCode(companyCode);
+            var result = await _companyRepository.GetByCode(companyCode).ConfigureAwait(false);
             return _mapper.Map<CompanyInfo>(result);
         }
 
-        public bool SaveCompany(CompanyInfo company) {
+        public async Task<bool> SaveCompany(CompanyInfo company) {
             var result = _mapper.Map<Company>(company);
-            return _companyRepository.SaveCompany(result);
+            return await _companyRepository.SaveCompany(result).ConfigureAwait(false);
         }
 
-        public bool DeleteCompany(string companyCode)
+        public async Task<bool> DeleteCompany(string companyCode)
         {
-            return _companyRepository.DeleteCompany(companyCode);
+            return await _companyRepository.DeleteCompany(companyCode).ConfigureAwait(false);
         }
     }
 }
