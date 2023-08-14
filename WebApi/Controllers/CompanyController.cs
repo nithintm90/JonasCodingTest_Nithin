@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Web.Http;
 using AutoMapper;
 using BusinessLayer.Model.Interfaces;
+using BusinessLayer.Model.Models;
 using WebApi.Models;
 
 namespace WebApi.Controllers
@@ -32,18 +34,45 @@ namespace WebApi.Controllers
         }
 
         // POST api/<controller>
-        public void Post([FromBody]string value)
+        [HttpPost]
+        public async Task<IHttpActionResult> Post(CompanyDto companyDto)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var company = _mapper.Map<CompanyInfo>(companyDto);
+            var result = await _companyService.SaveCompanyAsync(company);
+
+            if (!result)
+                throw new Exception("The Post Operation failed");
+            return Ok();
         }
 
         // PUT api/<controller>/5
-        public void Put(int id, [FromBody]string value)
+        public async Task<IHttpActionResult> Put(string companyCode, CompanyDto companyDto)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            
+
+            var company = _mapper.Map<CompanyInfo>(companyDto);
+            var result = await _companyService.UpdateCompanyAsync(companyCode, company);
+
+            if (!result)
+                throw new Exception("The PUT Operation failed");
+            return Ok();
+            
         }
 
+
         // DELETE api/<controller>/5
-        public void Delete(int id)
+        public async Task<IHttpActionResult> Delete(string companyCode)
         {
+            var result = await _companyService.DeleteCompanyAsync(companyCode);
+
+            if (!result)
+                throw new Exception("The DELETE Operation failed");
+            return Ok();
         }
     }
 }

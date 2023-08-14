@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using AutoMapper;
 using BusinessLayer.Model.Models;
 using DataAccessLayer.Model.Interfaces;
+using System.Threading.Tasks;
+using DataAccessLayer.Model.Models;
 
 namespace BusinessLayer.Services
 {
@@ -26,6 +28,37 @@ namespace BusinessLayer.Services
         {
             var result = _companyRepository.GetByCode(companyCode);
             return _mapper.Map<CompanyInfo>(result);
+        }
+
+        public async Task<bool> SaveCompanyAsync(CompanyInfo companyInfo)
+        {
+            var company = _mapper.Map<Company>(companyInfo);
+            return await _companyRepository.SaveCompanyAsync(company);
+        }
+
+        public async Task<bool> UpdateCompanyAsync(string companyCode, CompanyInfo companyInfo)
+        {
+            var existingCompany = _companyRepository.GetByCode(companyCode);
+
+            if (existingCompany == null)
+            {
+                return false;
+            }
+
+            _mapper.Map(companyInfo, existingCompany);
+            return await _companyRepository.UpdateCompanyAsync(existingCompany);
+        }
+
+        public async Task<bool> DeleteCompanyAsync(string companyCode)
+        {
+            var existingCompany = _companyRepository.GetByCode(companyCode);
+
+            if (existingCompany == null)
+            {
+                return false;
+            }
+
+            return await _companyRepository.DeleteCompanyAsync(existingCompany);
         }
     }
 }
