@@ -5,19 +5,23 @@ using System.Web.Http;
 using AutoMapper;
 using BusinessLayer.Model.Interfaces;
 using BusinessLayer.Model.Models;
+using Microsoft.Extensions.Logging;
 using WebApi.Models;
 
 namespace WebApi.Controllers
 {
+    [RoutePrefix("api/company")]
     public class CompanyController : ApiController
     {
         private readonly ICompanyService _companyService;
         private readonly IMapper _mapper;
+        private readonly ILogger<CompanyController> _logger;
 
-        public CompanyController(ICompanyService companyService, IMapper mapper)
+        public CompanyController(ICompanyService companyService, IMapper mapper, ILogger<CompanyController> logger)
         {
             _companyService = companyService;
             _mapper = mapper;
+            _logger = logger;
         }
         // GET api/<controller>
         public IEnumerable<CompanyDto> GetAll()
@@ -39,6 +43,8 @@ namespace WebApi.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
+            //Apply Logger
+            _logger.LogInformation("Post method called from Company");
 
             var company = _mapper.Map<CompanyInfo>(companyDto);
             var result = await _companyService.SaveCompanyAsync(company);
@@ -49,11 +55,14 @@ namespace WebApi.Controllers
         }
 
         // PUT api/<controller>/5
+        [HttpPut]
         public async Task<IHttpActionResult> Put(string companyCode, CompanyDto companyDto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-            
+
+            //Apply Logger
+            _logger.LogInformation("Put method called from Company");
 
             var company = _mapper.Map<CompanyInfo>(companyDto);
             var result = await _companyService.UpdateCompanyAsync(companyCode, company);
@@ -66,8 +75,12 @@ namespace WebApi.Controllers
 
 
         // DELETE api/<controller>/5
+        [HttpDelete]
         public async Task<IHttpActionResult> Delete(string companyCode)
         {
+            //Apply Logger
+            _logger.LogInformation("Delete method called from Company");
+
             var result = await _companyService.DeleteCompanyAsync(companyCode);
 
             if (!result)
