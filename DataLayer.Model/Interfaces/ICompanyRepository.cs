@@ -11,6 +11,8 @@ namespace DataAccessLayer.Model.Interfaces
     {
         IEnumerable<Company> GetAll();
         Company GetByCode(string companyCode);
-        bool SaveCompany(Company company);
+        Task<bool> SaveCompanyAsync(Company company);
+        Task<bool> UpdateCompanyAsync(Company company);
+        Task<bool> DeleteCompanyAsync(Company company);
     }
 }
