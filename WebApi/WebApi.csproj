@@ -71,6 +71,9 @@
     <Reference Include="Serilog, Version=2.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
       <HintPath>..\packages\Serilog.3.0.1\lib\net471\Serilog.dll</HintPath>
     </Reference>
+    <Reference Include="Serilog.Sinks.Async, Version=1.5.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
+      <HintPath>..\packages\Serilog.Sinks.Async.1.5.0\lib\net461\Serilog.Sinks.Async.dll</HintPath>
+    </Reference>
     <Reference Include="Serilog.Sinks.File, Version=5.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
       <HintPath>..\packages\Serilog.Sinks.File.5.0.0\lib\net45\Serilog.Sinks.File.dll</HintPath>
     </Reference>
@@ -143,6 +146,7 @@
     </Compile>
     <Compile Include="Custom\Logger.cs" />
     <Compile Include="Models\ArSubledgerDto.cs" />
+    <Compile Include="Models\EmployeeDto.cs" />
     <Compile Include="Models\CompanyDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

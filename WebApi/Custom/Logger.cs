@@ -1,4 +1,6 @@
-﻿using Serilog;
+﻿using Newtonsoft.Json;
+using Serilog;
+using System;
 using System.Web;
 
 namespace WebApi
@@ -18,6 +20,16 @@ namespace WebApi
         public static void LogError(string error)
         {
             _errorLogger.Error(error);
+        }
+
+        public static void LogJSONException(Exception ex)
+        {
+            var serializedException = JsonConvert.SerializeObject(ex, Formatting.None,
+                           new JsonSerializerSettings()
+                           {
+                               ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                           });
+            _errorLogger.Error(serializedException);
         }
 
         public static void LogInfo(string info)

@@ -82,7 +82,7 @@ namespace DataAccessLayer.Database
 			{
 				var entities = FindAll(cancellationToken);
 				var entity = entities.Where(expression.Compile());
-				foreach (var dataEntity in entity)
+				foreach (var dataEntity in entity.ToList())
 				{
 					DatabaseInstance.Remove(Tuple.Create(dataEntity.SiteId, dataEntity.CompanyCode));
 				}
