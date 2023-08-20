@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading;
 using System.Threading.Tasks;
 using DataAccessLayer.Model.Models;
 
@@ -18,40 +19,40 @@ namespace DataAccessLayer.Model.Interfaces
 		/// </summary>
 		/// <param name="data">object to insert</param>
 		/// <returns>true on success</returns>
-		bool Insert(T data);
+		bool Insert(T data, CancellationToken cancellationToken);
 
 		/// <summary>
 		/// Update an object in the database.
 		/// </summary>
 		/// <param name="data">object to update</param>
 		/// <returns>true on success</returns>
-		bool Update(T data);
+		bool Update(T data, CancellationToken cancellationToken);
 
 		/// <summary>
 		/// Find a list of objects based on a linq query.
 		/// </summary>
 		/// <param name="expression">a linq query for getting objects</param>
 		/// <returns>a list of objects on success</returns>
-		IEnumerable<T> Find(Expression<Func<T, bool>> expression);
+		IEnumerable<T> Find(Expression<Func<T, bool>> expression, CancellationToken cancellationToken);
 
 		/// <summary>
 		/// Get a list of all objects of the provided type.
 		/// </summary>
 		/// <returns>a lst of objects on success</returns>
-		IEnumerable<T> FindAll();
+		IEnumerable<T> FindAll(CancellationToken cancellationToken);
 
 		/// <summary>
 		/// Delete objects based on a linq query.
 		/// </summary>
 		/// <param name="expression">a linq query for deleting objects</param>
 		/// <returns>true on success</returns>
-		bool Delete(Expression<Func<T, bool>> expression);
+		bool Delete(Expression<Func<T, bool>> expression, CancellationToken cancellationToken);
 
 		/// <summary>
 		/// Delete all objects of the associated type.
 		/// </summary>
 		/// <returns>true on success</returns>
-		bool DeleteAll();
+		bool DeleteAll(CancellationToken cancellationToken);
 
 		/// <summary>
 		/// Update all objects by filter query.
@@ -60,7 +61,7 @@ namespace DataAccessLayer.Model.Interfaces
 		/// <param name="fieldToUpdate">field to update</param>
 		/// <param name="newValue">new value</param>
 		/// <returns>true on success</returns>
-		bool UpdateAll(Expression<Func<T, bool>> filter, string fieldToUpdate, object newValue);
+		bool UpdateAll(Expression<Func<T, bool>> filter, string fieldToUpdate, object newValue, CancellationToken cancellationToken);
 
 
 		/// <summary>
@@ -68,40 +69,40 @@ namespace DataAccessLayer.Model.Interfaces
 		/// </summary>
 		/// <param name="data">object to insert</param>
 		/// <returns>task for true on success</returns>
-		Task<bool> InsertAsync(T data);
+		Task<bool> InsertAsync(T data, CancellationToken cancellationToken);
 
 		/// <summary>
 		/// Update an object in the database.
 		/// </summary>
 		/// <param name="data">object to update</param>
 		/// <returns>task for true on success</returns>
-		Task<bool> UpdateAsync(T data);
+		Task<bool> UpdateAsync(T data, CancellationToken cancellationToken);
 
 		/// <summary>
 		/// Find a list of objects based on a linq query.
 		/// </summary>
 		/// <param name="expression">a linq query for getting objects</param>
 		/// <returns>task for a lst of objects on success</returns>
-		Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> expression);
+		Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> expression, CancellationToken cancellationToken);
 
 		/// <summary>
 		/// Get a list of all objects of the provided type.
 		/// </summary>
 		/// <returns>task for a lst of objects on success</returns>
-		Task<IEnumerable<T>> FindAllAsync();
+		Task<IEnumerable<T>> FindAllAsync(CancellationToken cancellationToken);
 
 		/// <summary>
 		/// Delete objects based on a linq query.
 		/// </summary>
 		/// <param name="expression">a linq query for deleting objects</param>
 		/// <returns>task for true on success</returns>
-		Task<bool> DeleteAsync(Expression<Func<T, bool>> expression);
+		Task<bool> DeleteAsync(Expression<Func<T, bool>> expression, CancellationToken cancellationToken);
 
 		/// <summary>
 		/// Delete all objects of the associated type.
 		/// </summary>
 		/// <returns>task for true on success</returns>
-		Task<bool> DeleteAllAsync();
+		Task<bool> DeleteAllAsync(CancellationToken cancellationToken);
 
 		/// <summary>
 		/// Update all objects by filter query.
@@ -110,7 +111,7 @@ namespace DataAccessLayer.Model.Interfaces
 		/// <param name="fieldToUpdate">field to update</param>
 		/// <param name="newValue">new value</param>
 		/// <returns>task for true on success</returns>
-		Task<bool> UpdateAllAsync(Expression<Func<T, bool>> filter, string fieldToUpdate, object newValue);
+		Task<bool> UpdateAllAsync(Expression<Func<T, bool>> filter, string fieldToUpdate, object newValue, CancellationToken cancellationToken);
 
 	}
 }

@@ -1,7 +1,5 @@
-﻿using System;
-using System.Linq;
-using System.Web.Http;
-
+﻿using System.Web.Http;
+using WebApi.Custom;
 
 namespace WebApi
 {
@@ -19,6 +17,8 @@ namespace WebApi
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+            config.Filters.Add(new LoggerActionFilter());
         }
     }
 }

@@ -12,6 +12,7 @@ namespace WebApi.App_Start
     using System;
     using System.Web;
     using System.Web.Http;
+    using System.Web.Http.ValueProviders;
     using BusinessLayer.Model.Interfaces;
     using BusinessLayer.Services;
     using Microsoft.Web.Infrastructure.DynamicModuleHelper;
@@ -20,6 +21,7 @@ namespace WebApi.App_Start
     using Ninject.Web.Common;
     using Ninject.Web.Common.WebHost;
     using Ninject.WebApi.DependencyResolver;
+    using Serilog;
 
     public static class NinjectWebCommon 
     {
@@ -84,7 +86,7 @@ namespace WebApi.App_Start
             }).InSingletonScope();
             kernel.Bind<ICompanyService>().To<CompanyService>();
             kernel.Bind<ICompanyRepository>().To<CompanyRepository>();
-            kernel.Bind(typeof(IDbWrapper<>)).To(typeof(InMemoryDatabase<>));
+            kernel.Bind(typeof(IDbWrapper<>)).To(typeof(InMemoryDatabase<>)).InSingletonScope();
         }
     }
 }

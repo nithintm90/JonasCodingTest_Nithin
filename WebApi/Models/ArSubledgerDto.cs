@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace WebApi.Models
 {
@@ -24,7 +25,9 @@ namespace WebApi.Models
     }
     public class BaseDto
     {
+        [Required]
         public string SiteId { get; set; }
+        [Required] 
         public string CompanyCode { get; set; }
     }
 }
