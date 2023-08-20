@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using DataAccessLayer.Model.Interfaces;
 using DataAccessLayer.Model.Models;
 
@@ -14,20 +16,21 @@ namespace DataAccessLayer.Repositories
 		    _companyDbWrapper = companyDbWrapper;
         }
 
-        public IEnumerable<Company> GetAll()
+        public Task<IEnumerable<Company>> GetAll(CancellationToken cancellationToken)
         {
-            return _companyDbWrapper.FindAll();
+            return _companyDbWrapper.FindAllAsync(cancellationToken);
         }
 
-        public Company GetByCode(string companyCode)
+        public Task<Company> GetByCode(string companyCode, CancellationToken cancellationToken)
         {
-            return _companyDbWrapper.Find(t => t.CompanyCode.Equals(companyCode))?.FirstOrDefault();
+            return Task.FromResult(_companyDbWrapper.FindAsync(t => t.CompanyCode.Equals(companyCode), cancellationToken).Result.FirstOrDefault());
         }
 
-        public bool SaveCompany(Company company)
+        public Task<bool> SaveCompany(Company company, CancellationToken cancellationToken)
         {
-            var itemRepo = _companyDbWrapper.Find(t =>
-                t.SiteId.Equals(company.SiteId) && t.CompanyCode.Equals(company.CompanyCode))?.FirstOrDefault();
+            var itemRepo = Task.WhenAll(_companyDbWrapper.FindAsync(t =>
+                t.SiteId.Equals(company.SiteId) && t.CompanyCode.Equals(company.CompanyCode), cancellationToken)).Result?.FirstOrDefault()?.FirstOrDefault();
+            
             if (itemRepo !=null)
             {
                 itemRepo.CompanyName = company.CompanyName;
@@ -40,10 +43,16 @@ namespace DataAccessLayer.Repositories
                 itemRepo.PhoneNumber = company.PhoneNumber;
                 itemRepo.PostalZipCode = company.PostalZipCode;
                 itemRepo.LastModified = company.LastModified;
-                return _companyDbWrapper.Update(itemRepo);
+                return _companyDbWrapper.UpdateAsync(itemRepo, cancellationToken);
             }
 
-            return _companyDbWrapper.Insert(company);
+            return _companyDbWrapper.InsertAsync(company, cancellationToken);
+        }
+
+        public Task<bool> DeleteCompany(string companyCode, CancellationToken cancellationToken)
+        {
+
+            return _companyDbWrapper.DeleteAsync(x => x.CompanyCode.Equals(companyCode), cancellationToken);
         }
     }
 }
