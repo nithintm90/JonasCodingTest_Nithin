@@ -25,6 +25,8 @@ namespace WebApi.Controllers
             _companyService = companyService;
             _mapper = mapper;
         }
+
+        [HttpGet]
         // GET api/<controller>
         public async Task<IHttpActionResult> GetAll(CancellationToken cancellationToken)
         {
@@ -41,6 +43,7 @@ namespace WebApi.Controllers
             }
         }
 
+        [HttpGet]
         // GET api/<controller>/5
         public async Task<IHttpActionResult> Get([FromUri] string companyCode, CancellationToken cancellationToken)
         {
@@ -57,6 +60,7 @@ namespace WebApi.Controllers
             }
         }
 
+        [HttpPost]
         // POST api/<controller>
         public async Task<IHttpActionResult> Post([FromBody] CompanyDto value, CancellationToken cancellationToken)
         {
@@ -76,6 +80,7 @@ namespace WebApi.Controllers
             }
         }
 
+        [HttpPut]
         // PUT api/<controller>/5
         public async Task<IHttpActionResult> Put([FromUri] string companyCode, [FromBody] CompanyDto value, CancellationToken cancellationToken)
         {
@@ -107,6 +112,7 @@ namespace WebApi.Controllers
             }
         }
 
+        [HttpDelete]
         // DELETE api/<controller>/5
         public async Task<IHttpActionResult> Delete([Required] string companyCode, CancellationToken cancellationToken)
         {
