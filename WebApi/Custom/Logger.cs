@@ -10,7 +10,7 @@ namespace WebApi
         static Logger()
         {
             _errorLogger = new LoggerConfiguration()
-                .WriteTo.File(HttpContext.Current.Server.MapPath("~/Logs/log-.log"), rollingInterval: RollingInterval.Day)
+                .WriteTo.Async(w => w.File(HttpContext.Current.Server.MapPath("~/Logs/log-.log"), rollingInterval: RollingInterval.Day))
                 .MinimumLevel.Verbose()
                 .CreateLogger();
         }
