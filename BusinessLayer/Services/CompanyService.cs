@@ -1,6 +1,7 @@
 ﻿using System;
 using BusinessLayer.Model.Interfaces;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using AutoMapper;
 using BusinessLayer.Model.Models;
 using DataAccessLayer.Model.Interfaces;
@@ -20,24 +21,24 @@ namespace BusinessLayer.Services
 			_companyRepository = companyRepository;
 			_mapper = mapper;
 		}
-		public IEnumerable<CompanyInfo> GetAllCompanies()
+		public async Task<IEnumerable<CompanyInfo>> GetAllCompaniesAsync()
 		{
-			var res = _companyRepository.GetAll();
+			var res = await _companyRepository.GetAllAsync();
 			return _mapper.Map<IEnumerable<CompanyInfo>>(res);
 		}
 
-		public CompanyInfo GetCompanyByCode(string companyCode)
+		public async Task<CompanyInfo> GetCompanyByCodeAsync(string companyCode)
 		{
-			var result = _companyRepository.GetByCode(companyCode);
+			var result = await _companyRepository.GetByCodeAsync(companyCode);
 			return _mapper.Map<CompanyInfo>(result);
 		}
 
-		public SaveResult Save(CompanyInfo companyInfo)
+		public async Task<SaveResult> SaveAsync(CompanyInfo companyInfo)
 		{
-			return Save(companyInfo, null);
+			return await SaveAsync(companyInfo, null);
 		}
 
-		public SaveResult Save(CompanyInfo companyInfo, CompanyInfo existing)
+		public async Task<SaveResult> SaveAsync(CompanyInfo companyInfo, CompanyInfo existing)
 		{
 			var company = _mapper.Map<Company>(companyInfo);
 
@@ -61,7 +62,7 @@ namespace BusinessLayer.Services
 			var rand = new Random();
 			company.SiteId = Sites[rand.Next(Sites.Length)];
 
-			if (_companyRepository.SaveCompany(company))
+			if (await _companyRepository.SaveCompanyAsync(company))
 			{
 				return SaveResult.Success;
 			}
@@ -69,9 +70,9 @@ namespace BusinessLayer.Services
 			return SaveResult.DuplicateKey;
 		}
 
-		public bool Delete(string companyCode)
+		public async Task<bool> DeleteAsync(string companyCode)
 		{
-			return _companyRepository.Delete(companyCode);
+			return await _companyRepository.DeleteAsync(companyCode);
 		}
 	}
 }

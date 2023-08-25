@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
+using System.Threading.Tasks;
 using System.Web.Http;
-using System.Web.Routing;
 using AutoMapper;
 using BusinessLayer.Model.Interfaces;
 using BusinessLayer.Model.Models;
@@ -21,15 +20,15 @@ namespace WebApi.Controllers
 			_mapper = mapper;
 		}
 
-		public IEnumerable<CompanyDto> GetAll()
+		public async Task<IEnumerable<CompanyDto>> GetAllAsync()
 		{
-			var items = _companyService.GetAllCompanies();
+			var items = await _companyService.GetAllCompaniesAsync();
 			return _mapper.Map<IEnumerable<CompanyDto>>(items);
 		}
 
-		public IHttpActionResult Get(string companyCode)
+		public async Task<IHttpActionResult> GetAsync(string companyCode)
 		{
-			var item = _companyService.GetCompanyByCode(companyCode);
+			var item = await _companyService.GetCompanyByCodeAsync(companyCode);
 			if (item is null)
 			{
 				return NotFound();
@@ -38,28 +37,28 @@ namespace WebApi.Controllers
 			return Ok(_mapper.Map<CompanyDto>(item));
 		}
 
-		public IHttpActionResult Post([FromBody] CompanyDto companyDto)
+		public async Task<IHttpActionResult> PostAsync([FromBody] CompanyDto companyDto)
 		{
 			var companyInfo = _mapper.Map<CompanyInfo>(companyDto);
-			var res = _companyService.Save(companyInfo);
+			var res = await _companyService.SaveAsync(companyInfo);
 			return SaveResultToActionResult(res, companyInfo);
 		}
 
-		public IHttpActionResult Put(string companyCode, [FromBody] CompanyDto companyDto)
+		public async Task<IHttpActionResult> PutAsync(string companyCode, [FromBody] CompanyDto companyDto)
 		{
-			var oldItem = _companyService.GetCompanyByCode(companyCode);
+			var oldItem = await _companyService.GetCompanyByCodeAsync(companyCode);
 			if (oldItem is null)
 			{
 				return NotFound();
 			}
 
 			var newItem = _mapper.Map<CompanyInfo>(companyDto);
-			return SaveResultToActionResult(_companyService.Save(newItem, oldItem), newItem);
+			return SaveResultToActionResult(await _companyService.SaveAsync(newItem, oldItem), newItem);
 		}
 
-		public IHttpActionResult Delete(string companyCode)
+		public async Task<IHttpActionResult> DeleteAsync(string companyCode)
 		{
-			if (_companyService.Delete(companyCode))
+			if (await _companyService.DeleteAsync(companyCode))
 			{
 				return Ok();
 			}
