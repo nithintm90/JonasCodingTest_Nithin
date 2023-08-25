@@ -11,7 +11,8 @@ namespace BusinessLayer.Services
 {
 	public class CompanyService : ICompanyService
 	{
-		public readonly string[] Sites = { "Bravo", "Hotel", "Lima" };
+		// This would normally be stored elsewhere. Could be config on disk or a db table.
+		public static readonly string[] Sites = { "Bravo", "Hotel", "Lima" };
 
 		private readonly ICompanyRepository _companyRepository;
 		private readonly IMapper _mapper;
@@ -21,40 +22,40 @@ namespace BusinessLayer.Services
 			_companyRepository = companyRepository;
 			_mapper = mapper;
 		}
-		public async Task<IEnumerable<CompanyInfo>> GetAllCompaniesAsync()
+		public async Task<IEnumerable<CompanyInfo>> GetAllAsync()
 		{
 			var res = await _companyRepository.GetAllAsync();
 			return _mapper.Map<IEnumerable<CompanyInfo>>(res);
 		}
 
-		public async Task<CompanyInfo> GetCompanyByCodeAsync(string companyCode)
+		public async Task<CompanyInfo> GetByCodeAsync(string companyCode)
 		{
 			var result = await _companyRepository.GetByCodeAsync(companyCode);
 			return _mapper.Map<CompanyInfo>(result);
 		}
 
-		public async Task<SaveResult> SaveAsync(CompanyInfo companyInfo)
+		public async Task<CompanySaveResult> SaveAsync(CompanyInfo companyInfo)
 		{
 			return await SaveAsync(companyInfo, null);
 		}
 
-		public async Task<SaveResult> SaveAsync(CompanyInfo companyInfo, CompanyInfo existing)
+		public async Task<CompanySaveResult> SaveAsync(CompanyInfo companyInfo, CompanyInfo existing)
 		{
 			var company = _mapper.Map<Company>(companyInfo);
 
 			if (string.IsNullOrWhiteSpace(company.CompanyCode))
 			{
-				return SaveResult.MissingCode;
+				return CompanySaveResult.MissingCode;
 			}
 
 			if (!(existing is null) && companyInfo.CompanyCode != existing.CompanyCode)
 			{
-				return SaveResult.CannotChangeCode;
+				return CompanySaveResult.CannotChangeCode;
 			}
 
 			if (existing is null && !(company.SiteId is null))
 			{
-				return SaveResult.InvalidValue;
+				return CompanySaveResult.InvalidValue;
 			}
 
 			// Assuming this is for sharding.
@@ -62,12 +63,12 @@ namespace BusinessLayer.Services
 			var rand = new Random();
 			company.SiteId = Sites[rand.Next(Sites.Length)];
 
-			if (await _companyRepository.SaveCompanyAsync(company))
+			if (await _companyRepository.SaveAsync(company))
 			{
-				return SaveResult.Success;
+				return CompanySaveResult.Success;
 			}
 
-			return SaveResult.DuplicateKey;
+			return CompanySaveResult.DuplicateKey;
 		}
 
 		public async Task<bool> DeleteAsync(string companyCode)

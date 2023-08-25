@@ -27,7 +27,7 @@ namespace DataAccessLayer.Repositories
 			return possible.FirstOrDefault();
 		}
 
-		public async Task<bool> SaveCompanyAsync(Company company)
+		public async Task<bool> SaveAsync(Company company)
 		{
 			var possible = await _companyDbWrapper.FindAsync(t => t.SiteId.Equals(company.SiteId) && t.CompanyCode.Equals(company.CompanyCode));
 			var itemRepo = possible.FirstOrDefault();

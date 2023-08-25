@@ -22,13 +22,13 @@ namespace WebApi.Controllers
 
 		public async Task<IEnumerable<CompanyDto>> GetAllAsync()
 		{
-			var items = await _companyService.GetAllCompaniesAsync();
+			var items = await _companyService.GetAllAsync();
 			return _mapper.Map<IEnumerable<CompanyDto>>(items);
 		}
 
 		public async Task<IHttpActionResult> GetAsync(string companyCode)
 		{
-			var item = await _companyService.GetCompanyByCodeAsync(companyCode);
+			var item = await _companyService.GetByCodeAsync(companyCode);
 			if (item is null)
 			{
 				return NotFound();
@@ -46,7 +46,7 @@ namespace WebApi.Controllers
 
 		public async Task<IHttpActionResult> PutAsync(string companyCode, [FromBody] CompanyDto companyDto)
 		{
-			var oldItem = await _companyService.GetCompanyByCodeAsync(companyCode);
+			var oldItem = await _companyService.GetByCodeAsync(companyCode);
 			if (oldItem is null)
 			{
 				return NotFound();
@@ -67,26 +67,26 @@ namespace WebApi.Controllers
 			return InternalServerError();
 		}
 
-		private IHttpActionResult SaveResultToActionResult(SaveResult result, CompanyInfo companyInfo)
+		private IHttpActionResult SaveResultToActionResult(CompanySaveResult result, CompanyInfo companyInfo)
 		{
 			switch (result)
 			{
-				case SaveResult.Success:
+				case CompanySaveResult.Success:
 					return Created(
 						$"/api/company/{companyInfo?.CompanyCode}",
 						_mapper.Map<CompanyDto>(companyInfo)
 					);
 
-				case SaveResult.DuplicateKey:
+				case CompanySaveResult.DuplicateKey:
 					return BadRequest("Company code already exists.");
 
-				case SaveResult.MissingCode:
+				case CompanySaveResult.MissingCode:
 					return BadRequest("Missing company code.");
 
-				case SaveResult.InvalidValue:
+				case CompanySaveResult.InvalidValue:
 					return BadRequest("Cannot specify value for site ID.");
 
-				case SaveResult.CannotChangeCode:
+				case CompanySaveResult.CannotChangeCode:
 					return BadRequest("Cannot change company code.");
 
 				default:
