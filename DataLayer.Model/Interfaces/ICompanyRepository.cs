@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using DataAccessLayer.Model.Models;
 
 namespace DataAccessLayer.Model.Interfaces
@@ -12,5 +8,6 @@ namespace DataAccessLayer.Model.Interfaces
         IEnumerable<Company> GetAll();
         Company GetByCode(string companyCode);
         bool SaveCompany(Company company);
+        bool Delete(string companyCode);
     }
 }
