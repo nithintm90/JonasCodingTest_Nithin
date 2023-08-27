@@ -5,6 +5,7 @@ using System.Web.Http;
 using AutoMapper;
 using BusinessLayer.Model.Interfaces;
 using BusinessLayer.Model.Models;
+using Serilog;
 using WebApi.Models;
 
 namespace WebApi.Controllers
@@ -13,11 +14,13 @@ namespace WebApi.Controllers
 	{
 		private readonly ICompanyService _companyService;
 		private readonly IMapper _mapper;
+		private readonly ILogger _logger;
 
-		public CompanyController(ICompanyService companyService, IMapper mapper)
+		public CompanyController(ICompanyService companyService, IMapper mapper, ILogger logger)
 		{
 			_companyService = companyService;
 			_mapper = mapper;
+			_logger = logger;
 		}
 
 		public async Task<IEnumerable<CompanyDto>> GetAllAsync()
@@ -64,6 +67,9 @@ namespace WebApi.Controllers
 			}
 
 			// This operation shouldn't fail.
+			_logger
+				.ForContext(nameof(companyCode), companyCode)
+				.Fatal("Unknown error attempting to delete company.");
 			return InternalServerError();
 		}
 
@@ -90,6 +96,10 @@ namespace WebApi.Controllers
 					return BadRequest("Cannot change company code.");
 
 				default:
+					_logger
+						.ForContext(nameof(companyInfo), companyInfo, true)
+						.ForContext(nameof(result), result)
+						.Error("Unknown result.");
 					throw new NotSupportedException();
 			}
 		}

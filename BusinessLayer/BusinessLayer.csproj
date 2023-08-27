@@ -60,6 +60,9 @@
     <PackageReference Include="AutoMapper">
       <Version>7.0.1</Version>
     </PackageReference>
+    <PackageReference Include="Serilog">
+      <Version>3.0.1</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Threading.Tasks;
 using System.Web.Http;
 using AutoMapper;
 using BusinessLayer.Model.Interfaces;
 using BusinessLayer.Model.Models;
+using Serilog;
 using WebApi.Models;
 
 namespace WebApi.Controllers
@@ -13,11 +15,13 @@ namespace WebApi.Controllers
 	{
 		private readonly IEmployeeService _employeeService;
 		private readonly IMapper _mapper;
+		private readonly ILogger _logger;
 
-		public EmployeeController(IEmployeeService employeeService, IMapper mapper)
+		public EmployeeController(IEmployeeService employeeService, IMapper mapper, ILogger logger)
 		{
 			_employeeService = employeeService;
 			_mapper = mapper;
+			_logger = logger;
 		}
 
 		public async Task<IEnumerable<EmployeeDto>> GetAllAsync()
@@ -64,6 +68,9 @@ namespace WebApi.Controllers
 			}
 
 			// This operation shouldn't fail.
+			_logger
+				.ForContext(nameof(employeeCode), employeeCode)
+				.Fatal("Unknown error attempting to delete employee.");
 			return InternalServerError();
 		}
 
@@ -90,6 +97,10 @@ namespace WebApi.Controllers
 					return BadRequest("Cannot change Employee code.");
 
 				default:
+					_logger
+						.ForContext(nameof(employeeInfo), employeeInfo, true)
+						.ForContext(nameof(result), result)
+						.Error("Unknown result.");
 					throw new NotSupportedException();
 			}
 		}
