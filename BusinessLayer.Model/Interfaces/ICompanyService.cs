@@ -7,18 +7,18 @@ namespace BusinessLayer.Model.Interfaces
 	public enum CompanySaveResult
 	{
 		Success,
-        MissingCode,
-        InvalidValue,
-        DuplicateKey,
-        CannotChangeCode
+		MissingCode,
+		InvalidValue,
+		DuplicateKey,
+		CannotChangeCode
 	}
 
 	public interface ICompanyService
-    {
-	    Task<IEnumerable<CompanyInfo>> GetAllAsync();
-	    Task<CompanyInfo> GetByCodeAsync(string companyCode);
-	    Task<CompanySaveResult> SaveAsync(CompanyInfo companyInfo);
-	    Task<CompanySaveResult> SaveAsync(CompanyInfo companyInfo, CompanyInfo existing);
-	    Task<bool> DeleteAsync(string companyCode);
-    }
+	{
+		Task<IEnumerable<CompanyInfo>> GetAllAsync();
+		Task<CompanyInfo> GetByCodeAsync(string companyCode);
+		Task<CompanySaveResult> SaveAsync(CompanyInfo companyInfo);
+		Task<CompanySaveResult> SaveAsync(CompanyInfo companyInfo, CompanyInfo existing);
+		Task<bool> DeleteAsync(string companyCode);
+	}
 }
