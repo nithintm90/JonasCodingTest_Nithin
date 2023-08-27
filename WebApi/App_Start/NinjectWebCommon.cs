@@ -3,6 +3,7 @@ using BusinessLayer;
 using DataAccessLayer.Database;
 using DataAccessLayer.Model.Interfaces;
 using DataAccessLayer.Repositories;
+using Serilog;
 
 [assembly: WebActivatorEx.PreApplicationStartMethod(typeof(WebApi.App_Start.NinjectWebCommon), "Start")]
 [assembly: WebActivatorEx.ApplicationShutdownMethodAttribute(typeof(WebApi.App_Start.NinjectWebCommon), "Stop")]
@@ -84,7 +85,14 @@ namespace WebApi.App_Start
             }).InSingletonScope();
             kernel.Bind<ICompanyService>().To<CompanyService>();
             kernel.Bind<ICompanyRepository>().To<CompanyRepository>();
+            kernel.Bind<IEmployeeService>().To<EmployeeService>();
+			kernel.Bind<IEmployeeRepository>().To<EmployeeRepository>();
             kernel.Bind(typeof(IDbWrapper<>)).To(typeof(InMemoryDatabase<>));
+            kernel.Bind<ILogger>().ToMethod(ctx =>
+	            ctx.Request.ParentRequest?.Service is null
+		            ? Log.Logger
+		            : Log.ForContext(ctx.Request.ParentRequest.Service)
+	        );
         }
     }
 }
