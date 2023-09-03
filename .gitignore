@@ -8,3 +8,4 @@
 /.vs/JonasCodingTest/config/applicationhost.config
 /WebApi/WebApi.csproj.user
 /.vs/JonasCodingTest
+*.user

@@ -70,7 +70,6 @@ namespace BusinessLayer.Services
             var company = _mapper.Map<Company>(companyInfo);
             company.CompanyCode = companyCode;
             return _companyRepository.SaveCompany(company);
-
         }
 
         public async Task<bool> UpdateCompanyAsync(CompanyInfo companyInfo, string companyCode)
