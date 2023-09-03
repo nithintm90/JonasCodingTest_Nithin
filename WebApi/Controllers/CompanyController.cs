@@ -2,6 +2,7 @@
 using BusinessLayer.Model.Interfaces;
 using BusinessLayer.Model.Models;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Web.Http;
 using WebApi.Models;
 
@@ -18,37 +19,37 @@ namespace WebApi.Controllers
             _mapper = mapper;
         }
         // GET api/<controller>
-        public IEnumerable<CompanyDto> GetAll()
+        public async Task<IEnumerable<CompanyDto>> GetAllAsync()
         {
-            var items = _companyService.GetAllCompanies();
+            var items = await _companyService.GetAllCompaniesAsync();
             return _mapper.Map<IEnumerable<CompanyDto>>(items);
         }
 
         // GET api/<controller>/5
-        public CompanyDto Get(string companyCode)
+        public async Task<CompanyDto> GetAsync(string companyCode)
         {
-            var item = _companyService.GetCompanyByCode(companyCode);
+            var item = await _companyService.GetCompanyByCodeAsync(companyCode);
             return _mapper.Map<CompanyDto>(item);
         }
 
         // POST api/<controller>
-        public bool Post([FromBody] CompanyDto companyDto)
+        public async Task<bool> PostAsync([FromBody] CompanyDto companyDto)
         {
             var companyInfo = _mapper.Map<CompanyInfo>(companyDto);
-            return _companyService.SaveCompany(companyInfo);
+            return await _companyService.SaveCompanyAsync(companyInfo);
         }
 
         // PUT api/<controller>/5
-        public bool Put(string companyCode, [FromBody] CompanyDto companyDto)
+        public async Task<bool> PutAsync(string companyCode, [FromBody] CompanyDto companyDto)
         {
             var companyInfo = _mapper.Map<CompanyInfo>(companyDto);
-           return _companyService.UpdateCompany(companyInfo, companyCode);
+            return await _companyService.UpdateCompanyAsync(companyInfo, companyCode);
         }
 
         // DELETE api/<controller>/5
-        public bool Delete(string companyCode)
+        public async Task<bool> DeleteAsync(string companyCode)
         {
-            return _companyService.DeleteCompany(companyCode);
+            return await _companyService.DeleteCompanyAsync(companyCode);
         }
     }
 }

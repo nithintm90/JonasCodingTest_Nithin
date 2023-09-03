@@ -1,6 +1,6 @@
-1) Implement rest of Company controller functions, all the way down to data access layer
+(&check;) Implement rest of Company controller functions, all the way down to data access layer
 
-2) Change all Company controller functions to be asynchronous
+(&check;) Change all Company controller functions to be asynchronous
 
 3) Create new repository to get and save employee information with the following data model properties:
 
