@@ -1,8 +1,8 @@
-﻿using System;
+﻿using AutoMapper;
+using BusinessLayer.Model.Interfaces;
+using BusinessLayer.Model.Models;
 using System.Collections.Generic;
 using System.Web.Http;
-using AutoMapper;
-using BusinessLayer.Model.Interfaces;
 using WebApi.Models;
 
 namespace WebApi.Controllers
@@ -32,18 +32,23 @@ namespace WebApi.Controllers
         }
 
         // POST api/<controller>
-        public void Post([FromBody]string value)
+        public bool Post([FromBody] CompanyDto companyDto)
         {
+            var companyInfo = _mapper.Map<CompanyInfo>(companyDto);
+            return _companyService.SaveCompany(companyInfo);
         }
 
         // PUT api/<controller>/5
-        public void Put(int id, [FromBody]string value)
+        public bool Put(string companyCode, [FromBody] CompanyDto companyDto)
         {
+            var companyInfo = _mapper.Map<CompanyInfo>(companyDto);
+           return _companyService.UpdateCompany(companyInfo, companyCode);
         }
 
         // DELETE api/<controller>/5
-        public void Delete(int id)
+        public bool Delete(string companyCode)
         {
+            return _companyService.DeleteCompany(companyCode);
         }
     }
 }

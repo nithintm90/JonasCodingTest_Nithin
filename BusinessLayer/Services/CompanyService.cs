@@ -1,8 +1,9 @@
-﻿using BusinessLayer.Model.Interfaces;
-using System.Collections.Generic;
-using AutoMapper;
+﻿using AutoMapper;
+using BusinessLayer.Model.Interfaces;
 using BusinessLayer.Model.Models;
 using DataAccessLayer.Model.Interfaces;
+using DataAccessLayer.Model.Models;
+using System.Collections.Generic;
 
 namespace BusinessLayer.Services
 {
@@ -16,6 +17,12 @@ namespace BusinessLayer.Services
             _companyRepository = companyRepository;
             _mapper = mapper;
         }
+
+        public bool DeleteCompany(string companyCode)
+        {
+            return _companyRepository.DeleteByCode(companyCode);
+        }
+
         public IEnumerable<CompanyInfo> GetAllCompanies()
         {
             var res = _companyRepository.GetAll();
@@ -26,6 +33,20 @@ namespace BusinessLayer.Services
         {
             var result = _companyRepository.GetByCode(companyCode);
             return _mapper.Map<CompanyInfo>(result);
+        }
+
+        public bool SaveCompany(CompanyInfo companyInfo)
+        {
+            var company = _mapper.Map<Company>(companyInfo);
+            return _companyRepository.SaveCompany(company);
+        }
+
+        public bool UpdateCompany(CompanyInfo companyInfo, string companyCode)
+        {
+            var company = _mapper.Map<Company>(companyInfo);
+            company.CompanyCode = companyCode;
+            return _companyRepository.SaveCompany(company);
+
         }
     }
 }
