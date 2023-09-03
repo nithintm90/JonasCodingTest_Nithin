@@ -25,4 +25,4 @@
 * string PhoneNumber,
 * string LastModifiedDateTime
 
-5) Add logger to solution and add proper error handling
+(&check;) Add logger to solution and add proper error handling
