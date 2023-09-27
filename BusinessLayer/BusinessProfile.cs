@@ -15,6 +15,11 @@ namespace BusinessLayer
         {
             CreateMap<DataEntity, BaseInfo>();
             CreateMap<Company, CompanyInfo>();
+            CreateMap<CreateUpdateCompanyRequest, Company>()
+                .ForMember(q => q.Code, w => w.MapFrom(q => q.CompanyCode));
+            CreateMap<Employee, EmployeeInfo>();
+            CreateMap<CreateUpdateEmployeeRequest, Employee>()
+                .ForMember(q => q.Code, w => w.MapFrom(q => q.EmployeeCode));
             CreateMap<ArSubledger, ArSubledgerInfo>();
         }
     }

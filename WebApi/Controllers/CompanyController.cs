@@ -1,8 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Web.Http;
 using AutoMapper;
 using BusinessLayer.Model.Interfaces;
+using BusinessLayer.Model.Models;
 using WebApi.Models;
 
 namespace WebApi.Controllers
@@ -18,32 +19,38 @@ namespace WebApi.Controllers
             _mapper = mapper;
         }
         // GET api/<controller>
-        public IEnumerable<CompanyDto> GetAll()
+        public async Task<IEnumerable<CompanyDto>> GetAllAsync()
         {
-            var items = _companyService.GetAllCompanies();
+            var items = await _companyService.GetAllCompaniesAsync();
             return _mapper.Map<IEnumerable<CompanyDto>>(items);
         }
 
         // GET api/<controller>/5
-        public CompanyDto Get(string companyCode)
+        public async Task<CompanyDto> GetAsync(string companyCode)
         {
-            var item = _companyService.GetCompanyByCode(companyCode);
+            var item = await _companyService.GetCompanyByCodeAsync(companyCode);
             return _mapper.Map<CompanyDto>(item);
         }
 
         // POST api/<controller>
-        public void Post([FromBody]string value)
+        public async Task Post([FromBody] CreateUpdateCompanyRequest req)
         {
+            await _companyService.CreateCompanyAsync(req);
+            Ok();
         }
 
         // PUT api/<controller>/5
-        public void Put(int id, [FromBody]string value)
+        public async Task Put(string id, [FromBody] CreateUpdateCompanyRequest req)
         {
+            await _companyService.UpdateCompanyAsync(req, id);
+            Ok();
         }
 
         // DELETE api/<controller>/5
-        public void Delete(int id)
+        public async Task Delete(string id)
         {
+            await _companyService.DeleteCompanyAsync(id);
+            Ok();
         }
     }
 }

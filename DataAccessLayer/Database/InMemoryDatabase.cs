@@ -13,16 +13,16 @@ namespace DataAccessLayer.Database
 	{
 		private Dictionary<Tuple<string, string>, DataEntity> DatabaseInstance;
 
-		public InMemoryDatabase()
+		public InMemoryDatabase(Dictionary<Tuple<string, string>, DataEntity> inMemoryStorage)
 		{
-			DatabaseInstance = new Dictionary<Tuple<string, string>, DataEntity>();
+			DatabaseInstance = inMemoryStorage;
 		}
 
 		public bool Insert(T data)
 		{
 			try
 			{
-				DatabaseInstance.Add(Tuple.Create(data.SiteId, data.CompanyCode), data);
+				DatabaseInstance.Add(Tuple.Create(data.SiteId, data.Code), data);
 				return true;
 			}
 			catch
@@ -35,9 +35,9 @@ namespace DataAccessLayer.Database
 		{
 			try
 			{
-				if (DatabaseInstance.ContainsKey(Tuple.Create(data.SiteId, data.CompanyCode)))
+				if (DatabaseInstance.ContainsKey(Tuple.Create(data.SiteId, data.Code)))
 				{
-					DatabaseInstance.Remove(Tuple.Create(data.SiteId, data.CompanyCode));
+					DatabaseInstance.Remove(Tuple.Create(data.SiteId, data.Code));
 					Insert(data);
 					return true;
 				}
@@ -83,7 +83,7 @@ namespace DataAccessLayer.Database
 				var entity = entities.Where(expression.Compile());
 				foreach (var dataEntity in entity)
 				{
-					DatabaseInstance.Remove(Tuple.Create(dataEntity.SiteId, dataEntity.CompanyCode));
+					DatabaseInstance.Remove(Tuple.Create(dataEntity.SiteId, dataEntity.Code));
 				}
 				
 				return true;
@@ -117,7 +117,7 @@ namespace DataAccessLayer.Database
 				{
 					var newEntity = UpdateProperty(dataEntity, fieldToUpdate, newValue);
 
-					DatabaseInstance.Remove(Tuple.Create(dataEntity.SiteId, dataEntity.CompanyCode));
+					DatabaseInstance.Remove(Tuple.Create(dataEntity.SiteId, dataEntity.Code));
 					Insert(newEntity);
 				}
 

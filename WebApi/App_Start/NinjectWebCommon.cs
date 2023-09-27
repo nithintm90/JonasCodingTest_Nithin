@@ -10,10 +10,12 @@ using DataAccessLayer.Repositories;
 namespace WebApi.App_Start
 {
     using System;
+    using System.Collections.Generic;
     using System.Web;
     using System.Web.Http;
     using BusinessLayer.Model.Interfaces;
     using BusinessLayer.Services;
+    using DataAccessLayer.Model.Models;
     using Microsoft.Web.Infrastructure.DynamicModuleHelper;
 
     using Ninject;
@@ -84,7 +86,12 @@ namespace WebApi.App_Start
             }).InSingletonScope();
             kernel.Bind<ICompanyService>().To<CompanyService>();
             kernel.Bind<ICompanyRepository>().To<CompanyRepository>();
-            kernel.Bind(typeof(IDbWrapper<>)).To(typeof(InMemoryDatabase<>));
+            kernel.Bind<IEmployeeService>().To<EmployeeService>();
+            kernel.Bind<IEmployeeRepository>().To<EmployeeRepository>();
+            kernel.Bind(typeof(IDbWrapper<>))
+                .To(typeof(InMemoryDatabase<>))
+                .InSingletonScope()
+                .WithConstructorArgument(new Dictionary<Tuple<string, string>, DataEntity>());
         }
     }
 }

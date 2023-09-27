@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.Model.Models
 {
-	public class DataEntity
+	public abstract class DataEntity
 	{
 		public string SiteId { get; set; }
-		public string CompanyCode { get; set; }
+		public string Code { get; set; }
+		public DateTime LastModified { get; set; }
 	}
 }
