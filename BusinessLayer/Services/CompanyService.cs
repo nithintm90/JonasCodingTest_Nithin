@@ -6,6 +6,7 @@ using DataAccessLayer.Model.Interfaces;
 using System.Threading.Tasks;
 using DataAccessLayer.Model.Models;
 using System;
+using BusinessLayer.Exceptions;
 
 namespace BusinessLayer.Services
 {
@@ -29,7 +30,7 @@ namespace BusinessLayer.Services
 
             if(await _companyRepository.Exists(companyInfo.CompanyCode))
             {
-                throw new Exception($"Cannot create a Company. A company with a Company Code '{companyInfo.CompanyCode}' already exists.");
+                throw new EntityConflictException($"Cannot create a Company. A company with a Company Code '{companyInfo.CompanyCode}' already exists.");
             }
 
             Company company = _mapper.Map<Company>(companyInfo);
@@ -45,7 +46,7 @@ namespace BusinessLayer.Services
 
             if (!await _companyRepository.Exists(companyCode))
             {
-                throw new Exception($"Cannot delete a Company. A company with a Company Code '{companyCode}' does not exist.");
+                throw new EntityNotFoundException($"Cannot delete a Company. A company with a Company Code '{companyCode}' does not exist.");
             }
 
             await _companyRepository.DeleteAsync(companyCode);
@@ -82,7 +83,7 @@ namespace BusinessLayer.Services
 
             if (!await _companyRepository.Exists(companyCode))
             {
-                throw new Exception($"Cannot update a Company. A company with a Company Code '{companyCode}' does not exist.");
+                throw new EntityNotFoundException($"Cannot update a Company. A company with a Company Code '{companyCode}' does not exist.");
             }
 
             Company company = _mapper.Map<Company>(companyInfo);

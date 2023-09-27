@@ -6,6 +6,7 @@ using DataAccessLayer.Model.Interfaces;
 using System.Threading.Tasks;
 using DataAccessLayer.Model.Models;
 using System;
+using BusinessLayer.Exceptions;
 
 namespace BusinessLayer.Services
 {
@@ -34,12 +35,12 @@ namespace BusinessLayer.Services
 
             if(await _employeeRepository.Exists(req.EmployeeCode))
             {
-                throw new Exception($"Cannot create a Employee. An Employee with a Employee Code '{req.EmployeeCode}' already exists.");
+                throw new EntityConflictException($"Cannot create a Employee. An Employee with a Employee Code '{req.EmployeeCode}' already exists.");
             }
 
             if (!await _companyRepository.Exists(req.CompanyCode))
             {
-                throw new Exception($"Cannot create a Employee. A company with a Company Code '{req.CompanyCode}' does not exists.");
+                throw new EntityNotFoundException($"Cannot create a Employee. A company with a Company Code '{req.CompanyCode}' does not exists.");
             }
 
             Employee employee = _mapper.Map<Employee>(req);
@@ -56,7 +57,7 @@ namespace BusinessLayer.Services
 
             if (!await _employeeRepository.Exists(code))
             {
-                throw new Exception($"Cannot delete a Employee. An employee with a Employee Code '{code}' does not exist.");
+                throw new EntityNotFoundException($"Cannot delete a Employee. An employee with a Employee Code '{code}' does not exist.");
             }
 
             await _employeeRepository.DeleteAsync(code);
@@ -93,12 +94,12 @@ namespace BusinessLayer.Services
 
             if (!await _employeeRepository.Exists(code))
             {
-                throw new Exception($"Cannot update a Employee. An employee with an Employee Code '{code}' does not exist.");
+                throw new EntityNotFoundException($"Cannot update a Employee. An employee with an Employee Code '{code}' does not exist.");
             }
 
             if (!await _companyRepository.Exists(req.CompanyCode))
             {
-                throw new Exception($"Cannot update a Employee. A company with a Company Code '{req.CompanyCode}' does not exists.");
+                throw new EntityNotFoundException($"Cannot update a Employee. A company with a Company Code '{req.CompanyCode}' does not exists.");
             }
 
             Employee employee = _mapper.Map<Employee>(req);
