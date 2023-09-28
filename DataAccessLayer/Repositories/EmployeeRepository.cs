@@ -5,9 +5,9 @@ using Serilog;
 
 namespace DataAccessLayer.Repositories
 {
-    public class CompanyRepository : GenericRepository<Company>, ICompanyRepository
+    public class EmployeeRepository : GenericRepository<Employee>, IEmployeeRepository
     {
-        public CompanyRepository(IDbWrapper<Company> companyDbWrapper, IMapper mapper, ILogger logger)
+        public EmployeeRepository(IDbWrapper<Employee> companyDbWrapper, IMapper mapper, ILogger logger) 
             : base(companyDbWrapper, mapper, logger) {}
     }
 }

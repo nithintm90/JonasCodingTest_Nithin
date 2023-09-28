@@ -13,7 +13,6 @@ namespace DataAccessLayer.Model.Models
         public string PostalZipCode { get; set; }
         public string PhoneNumber { get; set; }
         public string FaxNumber { get; set; }
-        public DateTime? LastModified { get; set; }
         public string Active { get; set; }
         public string Inactive { get; set; }
         public string Excellent { get; set; }

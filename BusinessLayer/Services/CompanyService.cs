@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using AutoMapper;
 using BusinessLayer.Model.Models;
 using DataAccessLayer.Model.Interfaces;
+using System.Threading.Tasks;
+using DataAccessLayer.Model.Models;
+using System;
+using BusinessLayer.Exceptions;
 
 namespace BusinessLayer.Services
 {
@@ -16,16 +20,74 @@ namespace BusinessLayer.Services
             _companyRepository = companyRepository;
             _mapper = mapper;
         }
-        public IEnumerable<CompanyInfo> GetAllCompanies()
+
+        public async Task CreateCompanyAsync(CreateUpdateCompanyRequest companyInfo)
         {
-            var res = _companyRepository.GetAll();
+            if(companyInfo is null)
+            {
+                throw new ArgumentNullException(nameof(companyInfo));
+            }
+
+            if(await _companyRepository.Exists(companyInfo.CompanyCode))
+            {
+                throw new EntityConflictException($"Cannot create a Company. A company with a Company Code '{companyInfo.CompanyCode}' already exists.");
+            }
+
+            Company company = _mapper.Map<Company>(companyInfo);
+            await _companyRepository.Create(company);
+        }
+
+        public async Task DeleteCompanyAsync(string companyCode)
+        {
+            if (companyCode is null)
+            {
+                throw new ArgumentNullException(nameof(companyCode));
+            }
+
+            if (!await _companyRepository.Exists(companyCode))
+            {
+                throw new EntityNotFoundException($"Cannot delete a Company. A company with a Company Code '{companyCode}' does not exist.");
+            }
+
+            await _companyRepository.DeleteAsync(companyCode);
+        }
+
+        public async Task<IEnumerable<CompanyInfo>> GetAllCompaniesAsync()
+        {
+            IEnumerable<Company> res = await _companyRepository.GetAllAsync();
             return _mapper.Map<IEnumerable<CompanyInfo>>(res);
         }
 
-        public CompanyInfo GetCompanyByCode(string companyCode)
+        public async Task<CompanyInfo> GetCompanyByCodeAsync(string companyCode)
         {
-            var result = _companyRepository.GetByCode(companyCode);
+            if (companyCode is null)
+            {
+                throw new ArgumentNullException(nameof(companyCode));
+            }
+
+            var result = await _companyRepository.GetByCodeAsync(companyCode);
             return _mapper.Map<CompanyInfo>(result);
+        }
+
+        public async Task UpdateCompanyAsync(CreateUpdateCompanyRequest companyInfo, string companyCode)
+        {
+            if (companyInfo is null)
+            {
+                throw new ArgumentNullException(nameof(companyInfo));
+            }
+
+            if (companyCode is null)
+            {
+                throw new ArgumentNullException(nameof(companyCode));
+            }
+
+            if (!await _companyRepository.Exists(companyCode))
+            {
+                throw new EntityNotFoundException($"Cannot update a Company. A company with a Company Code '{companyCode}' does not exist.");
+            }
+
+            Company company = _mapper.Map<Company>(companyInfo);
+            await _companyRepository.Update(company);
         }
     }
 }

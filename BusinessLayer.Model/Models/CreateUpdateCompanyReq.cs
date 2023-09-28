@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace DataAccessLayer.Model.Models
+﻿namespace BusinessLayer.Model.Models
 {
-    public class Company : DataEntity
+    public class CreateUpdateCompanyRequest
     {
+        public string SiteId { get; set; }
+        public string CompanyCode { get; set; }
         public string CompanyName { get; set; }
         public string AddressLine1 { get; set; }
         public string AddressLine2 { get; set; }
@@ -14,6 +13,5 @@ namespace DataAccessLayer.Model.Models
         public string FaxNumber { get; set; }
         public string EquipmentCompanyCode { get; set; }
         public string Country { get; set; }
-        public List<ArSubledger> ArSubledgers { get; set; }
     }
 }
