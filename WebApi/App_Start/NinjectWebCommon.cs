@@ -22,6 +22,7 @@ namespace WebApi.App_Start
     using Ninject.Web.Common;
     using Ninject.Web.Common.WebHost;
     using Ninject.WebApi.DependencyResolver;
+    using Serilog;
 
     public static class NinjectWebCommon 
     {
@@ -84,6 +85,13 @@ namespace WebApi.App_Start
                 });
                 return config.CreateMapper();
             }).InSingletonScope();
+
+            kernel.Bind<ILogger>().ToMethod(ctx =>
+                ctx.Request.ParentRequest?.Service is null
+                    ? Log.Logger
+                    : Log.ForContext(ctx.Request.ParentRequest.Service)
+            );
+
             kernel.Bind<ICompanyService>().To<CompanyService>();
             kernel.Bind<ICompanyRepository>().To<CompanyRepository>();
             kernel.Bind<IEmployeeService>().To<EmployeeService>();
