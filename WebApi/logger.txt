@@ -1,0 +1,2 @@
+﻿2024-08-04 01:55:46.744 -04:00 [ERR] A Company is Saved
+2024-08-04 01:59:56.416 -04:00 [INF] A Company is Saved
