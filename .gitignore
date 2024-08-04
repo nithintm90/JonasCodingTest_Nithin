@@ -9,3 +9,7 @@
 /WebApi/Content
 /WebApi/fonts
 /WebApi/Scripts
+/BusinessLayer/.vs
+/DataAccessLayer/.vs
+/DataLayer.Model/.vs
+/WebApi/.vs
