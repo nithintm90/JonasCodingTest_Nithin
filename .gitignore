@@ -5,3 +5,11 @@
 /packages/
 /WebApi/Web.Debug.*
 /WebApi/Web.Release.config
+/.vs/JonasCodingTest
+/WebApi/Content
+/WebApi/fonts
+/WebApi/Scripts
+/BusinessLayer/.vs
+/DataAccessLayer/.vs
+/DataLayer.Model/.vs
+/WebApi/.vs

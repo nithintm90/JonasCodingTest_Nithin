@@ -1,29 +1,33 @@
-﻿using System;
+﻿using DataAccessLayer.Model.Interfaces;
+using DataAccessLayer.Model.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
-using DataAccessLayer.Model.Interfaces;
-using DataAccessLayer.Model.Models;
 
 namespace DataAccessLayer.Database
 {
-	public class InMemoryDatabase<T> : IDbWrapper<T> where T : DataEntity
+    public class InMemoryDatabase<T> : IDbWrapper<T> where T : DataEntity
 	{
-		private Dictionary<Tuple<string, string>, DataEntity> DatabaseInstance;
+        private static Dictionary<Tuple<string, string>, DataEntity> DatabaseInstance;
 
-		public InMemoryDatabase()
+		static InMemoryDatabase()
 		{
 			DatabaseInstance = new Dictionary<Tuple<string, string>, DataEntity>();
 		}
 
 		public bool Insert(T data)
 		{
+			
 			try
 			{
-				DatabaseInstance.Add(Tuple.Create(data.SiteId, data.CompanyCode), data);
-				return true;
+				
+					DatabaseInstance.Add(Tuple.Create(data.SiteId, data.CompanyCode), data);
+					return true;
+				
+                
 			}
 			catch
 			{

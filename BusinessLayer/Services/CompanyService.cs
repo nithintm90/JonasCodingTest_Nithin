@@ -1,8 +1,11 @@
-﻿using BusinessLayer.Model.Interfaces;
-using System.Collections.Generic;
-using AutoMapper;
+﻿using AutoMapper;
+using BusinessLayer.Model.Interfaces;
 using BusinessLayer.Model.Models;
 using DataAccessLayer.Model.Interfaces;
+using DataAccessLayer.Model.Models;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace BusinessLayer.Services
 {
@@ -16,16 +19,50 @@ namespace BusinessLayer.Services
             _companyRepository = companyRepository;
             _mapper = mapper;
         }
-        public IEnumerable<CompanyInfo> GetAllCompanies()
+        public async  Task<IEnumerable<CompanyInfo>> GetAllCompaniesAsync()
         {
-            var res = _companyRepository.GetAll();
+            var res = await _companyRepository.GetAll();
             return _mapper.Map<IEnumerable<CompanyInfo>>(res);
         }
 
-        public CompanyInfo GetCompanyByCode(string companyCode)
+        public  async Task<CompanyInfo> GetCompanyByCodeAsync(string companyCode)
         {
-            var result = _companyRepository.GetByCode(companyCode);
+            var result = await _companyRepository.GetByCode(companyCode);
             return _mapper.Map<CompanyInfo>(result);
         }
+
+       
+
+      
+
+        public async Task SaveCompanyAsync(CompanyInfo companyInfo)
+        {
+            var company = _mapper.Map < Company > (companyInfo);
+             await _companyRepository.SaveCompany(company);
+
+        }
+
+        public async Task UpdateCompanyAsync(string companyCode, CompanyInfo companyInfo )
+        {
+            var ExistingCompany = await GetCompanyByCodeAsync(companyCode);
+            if (ExistingCompany == null)
+            {
+                throw new Exception("Company ID doesn't exist");
+            }
+            else
+            {
+                var company = _mapper.Map<Company>(companyInfo);
+                await _companyRepository.SaveCompany(company);
+            }
+
+            
+        }
+
+        public async Task DeleteCompanyAsync(string CompanyCode)
+        {
+            await _companyRepository.DeleteCompany(CompanyCode);
+        }
+
+        
     }
 }
