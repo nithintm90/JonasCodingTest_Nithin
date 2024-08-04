@@ -20,10 +20,14 @@ namespace DataAccessLayer.Database
 
 		public bool Insert(T data)
 		{
+			
 			try
 			{
-				DatabaseInstance.Add(Tuple.Create(data.SiteId, data.CompanyCode), data);
-				return true;
+				
+					DatabaseInstance.Add(Tuple.Create(data.SiteId, data.CompanyCode), data);
+					return true;
+				
+                
 			}
 			catch
 			{
