@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<nlog xmlns="http://www.nlog-project.org/schemas/NLog.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<targets>
+		<!-- Log to file, located at root of the project solution -->
+		<target xsi:type="File" name="fileTarget" fileName="${basedir}/Logs/ApiLog.txt" layout="${longdate} ${level} ${message} ${exception}" />
+	</targets>
+
+	<rules>
+		<!-- Log all messages of level Error only -->
+		<logger name="*" minlevel="Info" writeTo="fileTarget" />
+	</rules>
+	<internalLogLevel>Trace</internalLogLevel>
+	<internalLogFile>${basedir}/Logs/nlog-internal.txt</internalLogFile>
+</nlog>

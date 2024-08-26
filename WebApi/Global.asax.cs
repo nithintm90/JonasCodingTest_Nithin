@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NLog;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -11,6 +12,8 @@ namespace WebApi
     {
         protected void Application_Start()
         {
+            NLog.LogManager.Setup().LoadConfigurationFromXml("NLog.config");
+
             GlobalConfiguration.Configure(WebApiConfig.Register);
         }
     }

@@ -13,51 +13,51 @@ using WebApi.Models;
 
 namespace WebApi.Controllers
 {
-    public class CompanyController : ApiController
+    public class EmployeeController : ApiController
     {
-        private readonly ICompanyService _companyService;
+        private readonly IEmployeeService _employeeService;
         private readonly IMapper _mapper;
 
         // NLog logger class
         private static readonly ILogger _logger = LogManager.GetCurrentClassLogger();
 
-        public CompanyController(ICompanyService companyService, IMapper mapper)
+        public EmployeeController(IEmployeeService employeeService, IMapper mapper)
         {
-            _companyService = companyService;
+            _employeeService = employeeService;
             _mapper = mapper;
         }
 
         // GET api/<controller>
         [HttpGet]
-        public async Task<IEnumerable<CompanyDto>> GetAll()
+        public async Task<IEnumerable<EmployeeDto>> GetAll()
         {
-            var items = await _companyService.GetAllCompaniesAsync();
-            return _mapper.Map<IEnumerable<CompanyDto>>(items);
+            var items = await _employeeService.GetAllEmployeesAsync();
+            return _mapper.Map<IEnumerable<EmployeeDto>>(items);
         }
 
         // GET api/<controller>/5
         [HttpGet]
-        [Route("api/company/{companyCode}")]
-        [ResponseType(typeof(CompanyDto))]
-        public async Task<IHttpActionResult> Get(string companyCode)
+        [Route("api/employee/{employeeCode}")]
+        [ResponseType(typeof(EmployeeDto))]
+        public async Task<IHttpActionResult> Get(string employeeCode)
         {
-            var item = await _companyService.GetCompanyByCodeAsync(companyCode);
+            var item = await _employeeService.GetEmployeeByCodeAsync(employeeCode);
             if (item == null)
             {
-                _logger.Error("NotFound - companyCode: " + companyCode);
+                _logger.Error("NotFound - employeeCode: " + employeeCode);
                 return NotFound();
             }
 
-            return Ok(_mapper.Map<CompanyDto>(item));
+            return Ok(_mapper.Map<EmployeeDto>(item));
         }
 
         // POST api/<controller>
         [HttpPost]
-        public async Task<IHttpActionResult> Post([FromBody]CompanyDto companyDto)
+        public async Task<IHttpActionResult> Post([FromBody]EmployeeDto employeeDto)
         {
             try
             {
-                bool success = await _companyService.SaveCompanyAsync(_mapper.Map<CompanyInfo>(companyDto));
+                bool success = await _employeeService.SaveEmployeeAsync(_mapper.Map<EmployeeInfo>(employeeDto));
                 if (success)
                 {
                     return Ok();
@@ -70,16 +70,16 @@ namespace WebApi.Controllers
             catch (Exception ex)
             {
                 //log the received create object too
-                _logger.Error(ex, "Exception while Create new company. Obj: " + JsonConvert.ToString(companyDto));
+                _logger.Error(ex, "Exception while Create new employee. Obj: " + JsonConvert.ToString(employeeDto));
                 return InternalServerError(ex);
             }
         }
 
         // PUT api/<controller>/5
         [HttpPut]
-        public async Task<IHttpActionResult> Put(int id, [FromBody] CompanyDto companyDto)
+        public async Task<IHttpActionResult> Put(int id, [FromBody] EmployeeDto employeeDto)
         {
-            //can edit existing company only
+            //can edit existing employee only
             if (id == 0)
             {
                 return BadRequest();
@@ -87,13 +87,13 @@ namespace WebApi.Controllers
 
             try
             {
-                CompanyInfo obj = _mapper.Map<CompanyInfo>(companyDto);
-                if (id.ToString() != obj.CompanyCode)
+                EmployeeInfo obj = _mapper.Map<EmployeeInfo>(employeeDto);
+                if (id.ToString() != obj.EmployeeCode)
                 {
                     return BadRequest();
                 }
 
-                bool success = await _companyService.SaveCompanyAsync(obj);
+                bool success = await _employeeService.SaveEmployeeAsync(obj);
                 if (success)
                 {
                     return Ok();
@@ -106,7 +106,7 @@ namespace WebApi.Controllers
             catch (Exception ex)
             {
                 //log the received update object too.
-                _logger.Error(ex, "Exception while updating company. Obj: " + JsonConvert.ToString(companyDto));
+                _logger.Error(ex, "Exception while updating employee. Obj: " + JsonConvert.ToString(employeeDto));
                 return InternalServerError(ex);
             }
         }
@@ -115,7 +115,7 @@ namespace WebApi.Controllers
         [HttpDelete]
         public async Task<IHttpActionResult> Delete(int id)
         {
-            //can delete existing company only
+            //can delete existing employee only
             if (id == 0)
             {
                 return BadRequest();
@@ -123,7 +123,7 @@ namespace WebApi.Controllers
 
             try
             {
-                bool success = await _companyService.DeleteCompanyAsync(id.ToString());
+                bool success = await _employeeService.DeleteEmployeeAsync(id.ToString());
                 if (success)
                 {
                     return Ok();
@@ -135,7 +135,7 @@ namespace WebApi.Controllers
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, "Exception while deleting company. company code: " + id);
+                _logger.Error(ex, "Exception while deleting employee. employee code: " + id);
                 return InternalServerError(ex);
             }
         }
